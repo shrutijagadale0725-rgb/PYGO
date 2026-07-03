@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>{% block title %}PYGO — Stop watching. Start coding.{% endblock %}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+{% block head %}{% endblock %}
+</head>
+<body>
+
+<div class="wrap" style="padding-bottom:0;">
+    <div class="topbar">
+      <a href="{{ url_for('main.index') }}" style="text-decoration:none;">
+        <div class="wordmark">PYGO</div>
+      </a>
+      <div class="nav-stamps">
+        <div class="stamp-pill">free forever</div>
+        {% if current_user.is_authenticated %}
+          <div class="stamp-pill level">LV {{ current_user.level }} · {{ current_user.total_xp }} XP</div>
+          <button type="button" class="stamp-pill btn" id="settings-open-btn">settings</button>
+          <a href="{{ url_for('auth.logout') }}" class="stamp-pill btn">log out</a>
+        {% else %}
+          <span id="auth-anchor">
+            <a href="{{ url_for('auth.login') }}" class="stamp-pill btn">log in</a>
+            <a href="{{ url_for('auth.signup') }}" class="stamp-pill btn">sign up</a>
+          </span>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  {% if current_user.is_authenticated %}
+  <div id="settings-backdrop" class="settings-backdrop"></div>
+
+  <aside id="settings-sidebar" class="settings-sidebar" aria-hidden="true">
+    <div class="settings-sidebar-head">
+      <span class="vp-tag">SETTINGS</span>
+      <button type="button" class="vp-close" id="settings-close-btn" aria-label="Close settings">✕</button>
+    </div>
+
+    <div class="settings-account">
+      <div class="settings-label">Signed in as</div>
+      <div class="settings-email">{{ current_user.email }}</div>
+    </div>
+
+    <div class="settings-section">
+      <span class="settings-section-tag name">✎ DISPLAY NAME</span>
+      <form method="POST" action="{{ url_for('auth.update_profile') }}">
+        <input type="text" name="display_name" value="{{ current_user.display_name }}" class="settings-input" required>
+        <button type="submit" class="settings-save-btn">Save Name</button>
+      </form>
+    </div>
+
+    <div class="settings-section">
+      <span class="settings-section-tag security">🔒 CHANGE PASSWORD</span>
+      <form method="POST" action="{{ url_for('auth.change_password') }}">
+        <input type="password" name="current_password" placeholder="Current password" class="settings-input" required>
+        <input type="password" name="new_password" placeholder="New password" class="settings-input" required minlength="6">
+        <input type="password" name="confirm_password" placeholder="Confirm new password" class="settings-input" required minlength="6">
+        <button type="submit" class="settings-save-btn">Update Password</button>
+      </form>
+    </div>
+
+    <a href="{{ github_url }}" target="_blank" rel="noopener" class="settings-contact-link">
+      💬 Feedback or found a bug? Open an issue on GitHub
+    </a>
+
+    <div class="settings-danger-zone">
+      <div class="settings-label">Danger zone</div>
+      <button type="button" class="settings-delete-btn" id="settings-delete-btn">Delete Account</button>
+      <p class="settings-danger-note">This permanently erases your account and all saved progress. There's no undoing it.</p>
+    </div>
+  </aside>
+
+  <div id="confirm-backdrop" class="settings-backdrop"></div>
+  <div id="confirm-popup" class="confirm-popup" role="alertdialog" aria-hidden="true">
+    <h3>Are you sure?</h3>
+    <p>This deletes your account and every lesson you've completed. This can't be undone.</p>
+    <div class="confirm-popup-buttons">
+      <button type="button" class="vp-secondary-btn" id="confirm-cancel-btn">Cancel</button>
+      <form action="{{ url_for('auth.delete_account') }}" method="POST" style="display:inline;">
+        <button type="submit" class="settings-delete-btn">Yes, delete my account</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/settings-panel.js') }}"></script>
+  {% endif %}
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash">
+        {% for category, message in messages %}
+          <div class="flash-msg {{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+<script>
+  window.PYGO_LOGGED_IN = {{ current_user.is_authenticated | tojson }};
+</script>
+  {% block content %}{% endblock %}
+
+  <div class="wrap" style="padding-top:0;">
+    <footer>More free lessons soon: conditionals, loops, functions &amp; a real mini-project. No video. Ever.</footer>
+  </div>
+<script src="{{ url_for('static', filename='js/pixel-bubble.js') }}"></script>
+</body>
+</html>

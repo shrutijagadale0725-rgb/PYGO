@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}{{ lesson.title }} — PYGO{% endblock %}
+
+{% block head %}
+<script src="https://cdn.jsdelivr.net/pyodide/v0.28.3/full/pyodide.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="wrap">
+  <a href="{{ url_for('main.index') }}" class="back-link">← Back to path</a>
+  <div class="divider">
+    <div class="rule"></div>
+    <div class="tag">LESSON {{ '%02d' % lesson.order }} — {{ lesson.title.upper() }}</div>
+    <div class="rule"></div>
+  </div>
+
+  {% if playable %}
+  <div class="main-grid">
+
+    <!-- LEFT -->
+    <div class="card">
+      <div class="bubble">
+        <span class="who">THE IDEA</span>
+        {{ lesson.story_html | safe }}
+      </div>
+      <div class="your-turn">
+        <span class="tag">YOUR TURN →</span>
+        {{ lesson.challenge_html | safe }}
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div>
+      <div class="card console-card">
+        <div class="console-bar">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <div class="title">main.py</div>
+        </div>
+        <textarea id="code" spellcheck="false">{{ lesson.starter_code }}</textarea>
+        <div class="run-row">
+          <button class="btn-run" id="run-btn" disabled>LOADING…</button>
+          <span class="run-status" id="run-status">Booting up Python…</span>
+        </div>
+        <div class="output" id="output"><span class="placeholder">&gt; output will appear here</span></div>
+      </div>
+
+      <div class="result-banner {% if completed %}show{% endif %}" id="result-banner">
+        <h3 id="result-title">Lesson complete 🎉</h3>
+        <p id="result-text">{{ lesson.success_message }} +{{ lesson.xp }} XP</p>
+        <div class="badge-row">
+          <div class="seal">★</div>
+          <div class="badge-name">{{ lesson.title.upper() }}</div>
+        </div>
+        {% if next_slug %}
+        <div class="next-row">
+          <a class="cta" href="{{ url_for('main.lesson', slug=next_slug) }}" style="font-size:13px; padding:10px 18px;">Next lesson →</a>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const LESSON_SLUG = {{ lesson.slug | tojson }};
+    const CHECK_PATTERN = {{ lesson.check_pattern | tojson }};
+    const PLACEHOLDER_VALUE = {{ lesson.placeholder_value | tojson }};
+    const SUCCESS_MESSAGE = {{ lesson.success_message | tojson }};
+    const XP_REWARD = {{ lesson.xp | tojson }};
+    const IS_LOGGED_IN = {{ current_user.is_authenticated | tojson }};
+    const ALREADY_COMPLETED = {{ completed | tojson }};
+  </script>
+  <script src="{{ url_for('static', filename='js/lesson.js') }}"></script>
+
+  {% else %}
+  <div class="card stub-card">
+    <div class="big">🛠️</div>
+    <h2>{{ lesson.title }} — coming soon</h2>
+    <p>{{ lesson.subtitle }}. This lesson is on the path but not written yet.</p>
+    <a class="cta" href="{{ url_for('main.index') }}" style="margin-top:14px;">Back to the path</a>
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}

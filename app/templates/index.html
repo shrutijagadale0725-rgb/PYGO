@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="wrap">
+  <section class="hero">
+    <div class="eyebrow-stamp">100% FREE · TOUCH GRASS, THEN CODE · NO ADS</div>
+    <h1>Why watch <span class="hl">13 hours</span> of video<br>when you can start coding in <span class="hl">13 seconds</span>?</h1>
+    <p class="sub">A free, interactive Python path built for doing, not watching. Real code, running in your browser, right now.</p>
+
+    <div class="no-video">
+      <svg class="no-video-icon" width="64" height="64" viewBox="0 0 64 64" fill="none">
+        <circle cx="32" cy="32" r="29" fill="#FF5A3C" stroke="#14171A" stroke-width="3"/>
+        <path d="M25 20L46 32L25 44V20Z" fill="#fff"/>
+        <line x1="12" y1="12" x2="52" y2="52" stroke="#14171A" stroke-width="5" stroke-linecap="round"/>
+      </svg>
+      <div class="no-video-caption">zero tutorial videos required</div>
+    </div>
+
+<a class="cta" href="{{ url_for('main.lesson', slug=hero_lesson.slug) }}"
+   {% if not current_user.is_authenticated %}data-requires-auth data-auth-message="🎈 Sign up to start Lesson 1!"{% endif %}>
+  {% if current_user.is_authenticated and completed %}Continue: {{ hero_lesson.title }} →{% else %}Start Lesson 1 →{% endif %}
+</a>
+  </section>
+{% if current_user.is_authenticated %}
+  <div class="dash-strip card">
+    <div class="dash-top">
+      <div class="dash-level">LV {{ current_user.level }}</div>
+      <div class="dash-stats">
+        <div class="dash-count">{{ completed|length }} / {{ lessons|length }} lessons complete</div>
+        <div class="dash-xp">{{ current_user.total_xp }} XP total</div>
+      </div>
+    </div>
+    <div class="dash-track"><div class="dash-fill" style="width:{{ dash_percent }}%;"></div></div>
+  </div>
+  {% endif %}
+  <div class="divider"><div class="rule"></div><div class="tag">THE FULL PATH</div><div class="rule"></div></div>
+
+  {% set topics = [] %}
+  {% for l in lessons %}
+    {% if l.topic not in topics %}{% set _ = topics.append(l.topic) %}{% endif %}
+  {% endfor %}
+
+  {% for topic in topics %}
+    <div class="topic-group">
+      <div class="topic-name">{{ topic }}</div>
+
+      {% if topic == 'Basics' and not current_user.is_authenticated %}
+      <div id="variables-preview" class="variables-preview" aria-hidden="true">
+        <button type="button" class="vp-close" id="vp-close-x" aria-label="Close preview">✕</button>
+        <span class="vp-tag">LIVE PREVIEW</span>
+        <h3 class="vp-title">Print Statements — Quick Preview</h3>
+        <p class="vp-explain">print() is how Python shows something on screen. Watch a PYGO lesson run itself — no clicking required.</p>
+        <div class="card console-card">
+          <div class="console-bar">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <div class="title">main.py</div>
+          </div>
+          <pre class="vp-code" id="vp-code"><span id="vp-code-typed"></span><span class="vp-caret">▍</span></pre>
+          <div class="run-row">
+            <button type="button" class="btn-run" id="vp-run-btn" disabled>▶ RUN</button>
+            <span class="run-status" id="vp-status">Watching this run itself…</span>
+          </div>
+          <div class="output" id="vp-output"><span class="placeholder">&gt; output will appear here</span></div>
+        </div>
+
+        <div class="result-banner" id="vp-result">
+          <div class="badge-row">
+            <div class="seal">★</div>
+            <div>
+              <div class="badge-name">LESSON COMPLETE</div>
+              <div class="vp-xp" id="vp-xp">+0 XP</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="vp-cta" id="vp-cta">
+          <h4>🎉 That's how PYGO lessons work.</h4>
+          <p>Create a free account or sign in to unlock this lesson and continue your coding journey.</p>
+          <div class="vp-cta-buttons">
+            <a href="{{ url_for('auth.signup') }}" class="cta">Create Free Account</a>
+            <a href="{{ url_for('auth.login') }}" class="vp-secondary-btn">Sign In</a>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+      <div class="lesson-grid">
+        {% for l in lessons if l.topic == topic %}
+          {% set is_done = l.slug in completed %}
+          {% set is_playable = l.starter_code is defined %}
+          {% set is_reachable = unlocked.get(l.slug, True) %}
+          {% if is_playable and is_reachable %}
+            <a class="lesson-tile"
+               href="{{ url_for('main.lesson', slug=l.slug) }}"
+                {% if not current_user.is_authenticated and l.slug == 'print-statements' %}data-demo-preview="print-statements"
+               {% elif not current_user.is_authenticated %}data-requires-auth{% endif %}>
+              {% if is_done %}<span class="done-mark">✓</span>{% endif %}
+              <div class="num">{{ '%02d' % l.order }}</div>
+              <div class="t">{{ l.title }}</div>
+              <div class="s">{{ l.subtitle }}</div>
+            </a>
+          {% elif is_playable and not is_reachable %}
+            <div class="lesson-tile locked">
+              <div class="num">{{ '%02d' % l.order }}</div>
+              <div class="t">{{ l.title }}</div>
+              <div class="s">🔒 finish earlier lessons first</div>
+            </div>
+          {% else %}
+            <div class="lesson-tile locked">
+              <div class="num">{{ '%02d' % l.order }}</div>
+              <div class="t">{{ l.title }}</div>
+              <div class="s">{{ l.subtitle }} · coming soon</div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+{% if not current_user.is_authenticated %}
+<script src="{{ url_for('static', filename='js/variables-demo.js') }}"></script>
+{% endif %}
+
+{% endblock %}
