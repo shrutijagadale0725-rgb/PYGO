@@ -156,8 +156,8 @@
         solved = true;
         banner.classList.add('show', 'pop');
         document.getElementById('result-text').textContent = `${SUCCESS_MESSAGE} +${XP_REWARD} XP`;
-        triggerConfetti();
         playSuccessSound();
+        triggerConfetti();
         await reportCompletion();
       } else if (errored) {
         setStatus("Your code hit an error — check the red message above.", "warn");
