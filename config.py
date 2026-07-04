@@ -20,4 +20,4 @@ class Config:
     # Shown as the "Feedback or found a bug?" link in the settings sidebar.
     # Point this at your repo's issues page, e.g.
     # "https://github.com/your-username/pygo/issues"
-    GITHUB_URL = os.environ.get("GITHUB_URL", "https://github.com/your-username/pygo")
+    GITHUB_URL = os.environ.get("GITHUB_URL", "https://github.com/shrutijagadale0725-rgb/PYGO")

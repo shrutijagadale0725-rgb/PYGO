@@ -50,7 +50,23 @@
       setTimeout(() => piece.remove(), (duration + delay) * 1000 + 150);
     }
   }
+  let successAudio = null;
 
+  function playSuccessSound() {
+    try {
+      if (!successAudio) {
+        successAudio = new Audio('/static/audio/success.mp3');
+        successAudio.volume = 0.6;
+      }
+      successAudio.currentTime = 0;
+      successAudio.play().catch(() => {
+        // Autoplay can be blocked until the user's interacted with the page -
+        // harmless if it fails, the visual celebration still works fine.
+      });
+    } catch (e) {
+      // Never let audio playback break the lesson-complete flow.
+    }
+  }
   async function setupPyodide() {
     try {
       const pyodide = await loadPyodide({
@@ -141,6 +157,7 @@
         banner.classList.add('show', 'pop');
         document.getElementById('result-text').textContent = `${SUCCESS_MESSAGE} +${XP_REWARD} XP`;
         triggerConfetti();
+        playSuccessSound();
         await reportCompletion();
       } else if (errored) {
         setStatus("Your code hit an error — check the red message above.", "warn");
