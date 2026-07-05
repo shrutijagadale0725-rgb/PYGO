@@ -2,6 +2,7 @@ import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_wtf import CSRFProtect
 from config import INSTANCE_DIR
 
 db = SQLAlchemy()
@@ -9,6 +10,7 @@ login_manager = LoginManager()
 login_manager.login_view = "auth.login"
 login_manager.login_message = "Log in to save your progress."
 login_manager.login_message_category = "info"
+csrf = CSRFProtect()
 
 
 def create_app():
@@ -21,7 +23,8 @@ def create_app():
 
     db.init_app(app)
     login_manager.init_app(app)
-
+    csrf.init_app(app)
+ 
     from app.models import User
 
     @login_manager.user_loader

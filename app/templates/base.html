@@ -49,6 +49,7 @@
     <div class="settings-section">
       <span class="settings-section-tag name">✎ DISPLAY NAME</span>
       <form method="POST" action="{{ url_for('auth.update_profile') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <input type="text" name="display_name" value="{{ current_user.display_name }}" class="settings-input" required>
         <button type="submit" class="settings-save-btn">Save Name</button>
       </form>
@@ -57,6 +58,7 @@
     <div class="settings-section">
       <span class="settings-section-tag security">🔒 CHANGE PASSWORD</span>
       <form method="POST" action="{{ url_for('auth.change_password') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <input type="password" name="current_password" placeholder="Current password" class="settings-input" required>
         <input type="password" name="new_password" placeholder="New password" class="settings-input" required minlength="6">
         <input type="password" name="confirm_password" placeholder="Confirm new password" class="settings-input" required minlength="6">
@@ -82,6 +84,7 @@
     <div class="confirm-popup-buttons">
       <button type="button" class="vp-secondary-btn" id="confirm-cancel-btn">Cancel</button>
       <form action="{{ url_for('auth.delete_account') }}" method="POST" style="display:inline;">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <button type="submit" class="settings-delete-btn">Yes, delete my account</button>
       </form>
     </div>
