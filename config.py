@@ -14,7 +14,7 @@ DB_PATH = (INSTANCE_DIR / "pygo.db").as_posix()
 
 
 class Config:
-    SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-change-this-in-production")
+    SECRET_KEY = os.environ["SECRET_KEY"]
     SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL", f"sqlite:///{DB_PATH}")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     # Shown as the "Feedback or found a bug?" link in the settings sidebar.

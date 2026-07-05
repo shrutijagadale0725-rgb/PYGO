@@ -14,7 +14,7 @@ login_manager.login_message_category = "info"
 def create_app():
     app = Flask(__name__)
     app.config.from_object("config.Config")
-
+    print("SECRET_KEY loaded:", bool(os.environ.get("SECRET_KEY")))
     # Must match the folder config.py builds the sqlite path from, or the
     # database file's directory won't exist when SQLAlchemy tries to open it.
     INSTANCE_DIR.mkdir(parents=True, exist_ok=True)
