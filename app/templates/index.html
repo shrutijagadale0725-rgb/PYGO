@@ -23,6 +23,7 @@
   </section>
 {% if current_user.is_authenticated %}
   <div class="dash-strip card">
+     <div class="dash-greeting">Welcome back, {{ current_user.display_name }} 👋</div>
     <div class="dash-top">
       <div class="dash-level">LV {{ current_user.level }}</div>
       <div class="dash-stats">

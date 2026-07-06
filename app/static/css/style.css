@@ -338,6 +338,9 @@ footer{ text-align:center; margin-top:50px; font-size:13.5px; color:var(--dim); 
 }
 /* ---------- homepage progress dashboard (logged-in users) ---------- */
 .dash-strip{ padding:18px 20px; margin-bottom:26px; }
+.dash-greeting{
+  font-family:'Space Grotesk'; font-weight:700; font-size:16px; margin-bottom:14px;
+}
 .dash-top{
   display:flex; align-items:center; justify-content:space-between;
   flex-wrap:wrap; gap:10px; margin-bottom:12px;
