@@ -21,9 +21,36 @@
   {% if current_user.is_authenticated and completed %}Continue: {{ hero_lesson.title }} →{% else %}Start Lesson 1 →{% endif %}
 </a>
   </section>
+
+  <div class="divider"><div class="rule"></div><div class="tag">WAIT, WHAT IS PYTHON?</div><div class="rule"></div></div>
+
+  <section class="wip-section">
+    <p class="wip-lead">Python is a programming language that lets you tell a computer exactly what to do — using code that reads almost like plain English. No wizard robes required.</p>
+
+    <div class="wip-grid">
+      <div class="wip-card">
+        <div class="wip-emoji">🌐</div>
+        <div class="wip-t">Web Apps</div>
+        <div class="wip-s">Instagram, Spotify, and Netflix all run on Python under the hood.</div>
+      </div>
+      <div class="wip-card">
+        <div class="wip-emoji">🤖</div>
+        <div class="wip-t">AI &amp; Machine Learning</div>
+        <div class="wip-s">ChatGPT, recommendation engines, self-driving cars — built with Python.</div>
+      </div>
+      <div class="wip-card">
+        <div class="wip-emoji">⚙️</div>
+        <div class="wip-t">Automation</div>
+        <div class="wip-s">Rename 100 files, scrape a website, send an email — a few lines of code, done.</div>
+      </div>
+    </div>
+
+    <p class="wip-cta">No experience needed. Just curiosity. Scroll down and start. ↓</p>
+  </section>
+
 {% if current_user.is_authenticated %}
   <div class="dash-strip card">
-     <div class="dash-greeting">Welcome back, {{ current_user.display_name }} 👋</div>
+    <div class="dash-greeting">Welcome back, {{ current_user.display_name }} 👋</div>
     <div class="dash-top">
       <div class="dash-level">LV {{ current_user.level }}</div>
       <div class="dash-stats">

@@ -21,3 +21,14 @@ class Config:
     # Point this at your repo's issues page, e.g.
     # "https://github.com/your-username/pygo/issues"
     GITHUB_URL = os.environ.get("GITHUB_URL", "https://github.com/shrutijagadale0725-rgb/PYGO")
+
+    # Gmail SMTP for password reset emails. MAIL_PASSWORD must be a Gmail
+    # "app password" (myaccount.google.com/apppasswords), never your real
+    # Gmail account password. Both are set as environment variables on
+    # PythonAnywhere, never committed to the repo.
+    MAIL_SERVER = "smtp.gmail.com"
+    MAIL_PORT = 587
+    MAIL_USE_TLS = True
+    MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
+    MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
+    MAIL_DEFAULT_SENDER = os.environ.get("MAIL_USERNAME")

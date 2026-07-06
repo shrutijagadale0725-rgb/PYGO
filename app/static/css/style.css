@@ -83,6 +83,30 @@ a:hover{ text-decoration:underline; }
 .cta:hover{ transform:translate(-2px,-2px); text-decoration:none; }
 .cta:active{ transform:translate(3px,3px); box-shadow:1px 1px 0 var(--coral); }
 
+/* ---------- what is python ---------- */
+.wip-section{ text-align:center; padding-bottom:10px; }
+.wip-lead{
+  font-size:17px; color:var(--dim); max-width:620px; margin:0 auto 30px; line-height:1.55;
+}
+.wip-grid{
+  display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr));
+  gap:18px; max-width:820px; margin:0 auto 30px;
+}
+.wip-card{
+  background:var(--panel); border:3px solid var(--ink); box-shadow:var(--shadow);
+  padding:22px 18px; text-align:left; transition:transform 0.12s ease;
+}
+.wip-card:nth-child(1){ transform:rotate(-1.5deg); }
+.wip-card:nth-child(2){ transform:rotate(1deg); }
+.wip-card:nth-child(3){ transform:rotate(-0.5deg); }
+.wip-card:hover{ transform:translate(-2px,-2px); }
+.wip-emoji{ font-size:28px; margin-bottom:10px; }
+.wip-t{ font-family:'Space Grotesk'; font-weight:700; font-size:16px; margin-bottom:6px; color:var(--ink); }
+.wip-s{ font-size:13.5px; color:var(--dim); line-height:1.5; }
+.wip-cta{
+  font-family:'Space Grotesk'; font-weight:700; font-size:15px; color:var(--green);
+}
+
 /* ---------- section divider ---------- */
 .divider{ display:flex; align-items:center; gap:14px; margin:10px 0 28px; }
 .divider .rule{ flex:1; height:3px; background:var(--ink); }
