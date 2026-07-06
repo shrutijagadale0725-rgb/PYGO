@@ -53,7 +53,7 @@ a:hover{ text-decoration:underline; }
 .flash-msg.success{ background:var(--green); color:#fff; }
 
 /* ---------- hero ---------- */
-.hero{ padding:64px 0 50px; text-align:center; position:relative; }
+.hero{ padding:64px 0 50px; text-align:center; position:relative; user-select:none; -webkit-user-select:none; -moz-user-select:none; }
 .eyebrow-stamp{
   display:inline-block; border:2px dashed var(--ink); border-radius:999px;
   padding:6px 16px; font-size:12px; font-weight:600; letter-spacing:0.5px;
@@ -84,7 +84,7 @@ a:hover{ text-decoration:underline; }
 .cta:active{ transform:translate(3px,3px); box-shadow:1px 1px 0 var(--coral); }
 
 /* ---------- what is python ---------- */
-.wip-section{ text-align:center; padding-bottom:10px; }
+.wip-section{ text-align:center; padding-bottom:10px; user-select:none; -webkit-user-select:none; -moz-user-select:none;}
 .wip-lead{
   font-size:17px; color:var(--dim); max-width:620px; margin:0 auto 30px; line-height:1.55;
 }
