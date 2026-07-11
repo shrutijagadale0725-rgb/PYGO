@@ -108,6 +108,16 @@ a:hover{ text-decoration:underline; }
   font-family:'Space Grotesk'; font-weight:700; font-size:15px; color:var(--green);
 }
 
+/* ---------- disable text selection on homepage sections + settings ---------- */
+.dash-strip,
+.topic-group,
+.divider,
+.settings-sidebar{
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+}
+
 /* ---------- section divider ---------- */
 .divider{ display:flex; align-items:center; gap:14px; margin:10px 0 28px; }
 .divider .rule{ flex:1; height:3px; background:var(--ink); }
