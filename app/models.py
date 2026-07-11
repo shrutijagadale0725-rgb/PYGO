@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import db
@@ -10,6 +10,9 @@ class User(UserMixin, db.Model):
     display_name = db.Column(db.String(80), nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+    current_streak = db.Column(db.Integer, default=0, nullable=False)
+    last_active_date = db.Column(db.Date, nullable=True)
+    avatar = db.Column(db.String(20), default="fox", nullable=False)
 
     progress = db.relationship("Progress", backref="user", lazy=True, cascade="all, delete-orphan")
 
@@ -18,6 +21,16 @@ class User(UserMixin, db.Model):
 
     def check_password(self, raw_password):
         return check_password_hash(self.password_hash, raw_password)
+
+    def record_activity(self):
+        today = datetime.now(timezone.utc).date()
+        if self.last_active_date == today:
+            return
+        if self.last_active_date == today - timedelta(days=1):
+            self.current_streak += 1
+        else:
+            self.current_streak = 1
+        self.last_active_date = today
 
     @property
     def total_xp(self):

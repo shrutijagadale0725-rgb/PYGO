@@ -103,18 +103,35 @@
       return;
     }
     try {
-      const res = await fetch('/api/complete', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ slug: LESSON_SLUG }),
-      });
+          const res = await fetch('/api/complete', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': CSRF_TOKEN,
+          },
+          body: JSON.stringify({ slug: LESSON_SLUG }),
+        });
       const data = await res.json();
       if (data.ok) {
         const levelPill = document.querySelector('.stamp-pill.level');
         if (levelPill) {
           levelPill.textContent = `LV ${data.level} · ${data.total_xp} XP`;
         }
+
+        if (data.streak > 0) {
+          let streakPill = document.getElementById('streak-pill');
+          if (!streakPill && levelPill) {
+          streakPill = document.createElement('div');
+          streakPill.className = 'stamp-pill streak';
+          streakPill.id = 'streak-pill';
+          streakPill.setAttribute('data-info-bubble', "Streak = days in a row you've practiced. Solve any lesson today to keep it going — miss a full day and it resets to 1.");
+          levelPill.insertAdjacentElement('afterend', streakPill);
+        }
+        if (streakPill) {
+            streakPill.textContent = `🔥 ${data.streak}`;
+        }
       }
+    } 
     } catch (e) {
       // Non-fatal: the student still sees their local success state.
     }
@@ -150,9 +167,22 @@
 
       const pattern = new RegExp(CHECK_PATTERN);
       const match = out.match(pattern);
-      const capturedValue = match && match[1] ? match[1].trim() : null;
 
-      if (capturedValue && capturedValue !== PLACEHOLDER_VALUE && !solved) {
+      function stillPlaceholder(match, placeholder) {
+        if (!match) return true;
+        if (Array.isArray(placeholder)) {
+          return placeholder.some((ph, i) => {
+            const captured = match[i + 1] ? match[i + 1].trim() : null;
+            return captured === null || captured === ph;
+          });
+        }
+        const captured = match[1] ? match[1].trim() : null;
+        return captured === null || captured === placeholder;
+      }
+
+      const notYetSolved = stillPlaceholder(match, PLACEHOLDER_VALUE);
+
+      if (!notYetSolved && !solved) {
         solved = true;
         banner.classList.add('show', 'pop');
         document.getElementById('result-text').textContent = `${SUCCESS_MESSAGE} +${XP_REWARD} XP`;
@@ -161,7 +191,7 @@
         await reportCompletion();
       } else if (errored) {
         setStatus("Your code hit an error — check the red message above.", "warn");
-      } else if (capturedValue === PLACEHOLDER_VALUE) {
+      } else if (notYetSolved && match) {
         setStatus("Close — change the placeholder value first.", "warn");
       } else if (!solved) {
         setStatus("Not quite — check the expected output format.", "warn");

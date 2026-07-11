@@ -165,6 +165,24 @@ def update_profile():
     return redirect(request.referrer or url_for("main.index"))
 
 
+VALID_AVATARS = {"fox", "panda", "penguin", "cat", "shiba"}
+
+
+@auth_bp.route("/update-avatar", methods=["POST"])
+@login_required
+def update_avatar():
+    choice = request.form.get("avatar", "")
+
+    if choice not in VALID_AVATARS:
+        flash("That's not a valid avatar.", "error")
+        return redirect(request.referrer or url_for("main.index"))
+
+    current_user.avatar = choice
+    db.session.commit()
+    flash("Avatar updated.", "success")
+    return redirect(request.referrer or url_for("main.index"))
+
+
 @auth_bp.route("/change-password", methods=["POST"])
 @login_required
 def change_password():

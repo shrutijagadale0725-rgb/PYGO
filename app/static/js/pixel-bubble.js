@@ -1,22 +1,24 @@
 /**
- * PygoBubble — a reusable pixel-art "NPC speech bubble" used to nudge
- * logged-out users toward signing up, without ever redirecting them away
- * from the page they're on.
+ * PygoBubble — a reusable pixel-art "NPC speech bubble".
  *
- * Usage:
- *   PygoBubble.show("🔒 Sign up to save this!");
+ * Two ways to use it:
  *
- * Or declaratively, on any element:
- *   <button data-requires-auth data-auth-message="✨ Just one click!">Save</button>
- * Clicking it while logged out shows the bubble and cancels the click;
- * logged-in users pass through untouched.
+ * 1. Auth nudge (unchanged from before) - shown to logged-out visitors,
+ *    anchored to the login/signup buttons:
+ *      <button data-requires-auth data-auth-message="✨ Just one click!">Save</button>
  *
- * Relies on `window.PYGO_LOGGED_IN` being set (see base.html) and a
- * `#auth-anchor` element wrapping the Login/Sign Up buttons.
+ * 2. Info tooltip (new) - shown to ANYONE, anchored to whatever element
+ *    was clicked, purely explanatory (no login gating, doesn't block the
+ *    click's normal behavior):
+ *      <div data-info-bubble="Streak = days in a row you've practiced.">🔥 5</div>
+ *
+ * Or call it directly from other JS:
+ *   PygoBubble.show("some message", someElement);
+ * (anchorEl is optional - defaults to the login/signup buttons)
  */
 (function () {
-  const CORNER = 10; // px "radius" of the pixel-stair corner
-  const STEP = 5;     // px size of each stair step (CORNER should be a multiple of STEP)
+  const CORNER = 10;
+  const STEP = 5;
 
   const COPY_POOL = [
     "👉 This way!",
@@ -32,6 +34,7 @@
   let bubbleEl, innerEl, arrowEl, textEl;
   let hideTimer = null;
   let built = false;
+  let currentAnchorEl = null;
 
   function pixelClipPath(w, h) {
     if (w <= 0 || h <= 0) return "none";
@@ -83,7 +86,7 @@
   }
 
   function position() {
-    const anchor = document.getElementById("auth-anchor");
+    const anchor = currentAnchorEl || document.getElementById("auth-anchor");
     if (!anchor) return;
     const rect = anchor.getBoundingClientRect();
 
@@ -119,9 +122,10 @@
     innerEl.style.clipPath = pixelClipPath(bw - 6, bh - 6);
   }
 
-  function show(message) {
+  function show(message, anchorEl) {
     build();
     textEl.textContent = message;
+    currentAnchorEl = anchorEl || document.getElementById("auth-anchor");
 
     clearTimeout(hideTimer);
     bubbleEl.classList.remove("hide");
@@ -149,15 +153,21 @@
   }
 
   document.addEventListener("click", (e) => {
-    const el = e.target.closest("[data-requires-auth]");
-    if (!el) return;
-    if (window.PYGO_LOGGED_IN) return;
+    const authEl = e.target.closest("[data-requires-auth]");
+    if (authEl) {
+      if (window.PYGO_LOGGED_IN) return;
+      e.preventDefault();
+      e.stopPropagation();
+      const msg = authEl.getAttribute("data-auth-message") || nextCopy();
+      show(msg);
+      return;
+    }
 
-    e.preventDefault();
-    e.stopPropagation();
-
-    const msg = el.getAttribute("data-auth-message") || nextCopy();
-    show(msg);
+    const infoEl = e.target.closest("[data-info-bubble]");
+    if (infoEl) {
+      const msg = infoEl.getAttribute("data-info-bubble");
+      if (msg) show(msg, infoEl);
+    }
   });
 
   window.addEventListener("resize", () => {

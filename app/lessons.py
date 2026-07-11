@@ -177,8 +177,8 @@ LESSONS = [
             "seconds = total_seconds  # use % here\n\n"
             'print(f"{minutes}m {seconds}s")'
         ),
-        "check_pattern": r"(\d+)m\s*\d+s",
-        "placeholder_value": "125",
+        "check_pattern": r"(\d+)m\s*(\d+)s",
+        "placeholder_value": ["125", "125"],
         "success_message": "You split seconds into minutes and leftover seconds.",
     },
     {

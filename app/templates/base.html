@@ -19,8 +19,12 @@
       <div class="nav-stamps">
         <div class="stamp-pill">free forever</div>
         {% if current_user.is_authenticated %}
-          <div class="stamp-pill level">LV {{ current_user.level }} · {{ current_user.total_xp }} XP</div>
-          <button type="button" class="stamp-pill btn" id="settings-open-btn">settings</button>
+          <img src="{{ url_for('static', filename='img/avatars/' + current_user.avatar + '.png') }}" alt="Your avatar" class="avatar-circle" id="avatar-topbar-btn" style="cursor:pointer;" data-info-bubble="🖼️ You can edit your avatar from the Settings page">
+<div class="stamp-pill level">LV {{ current_user.level }} · {{ current_user.total_xp }} XP</div>
+{% if current_user.current_streak > 0 %}
+<div class="stamp-pill streak" id="streak-pill" data-info-bubble="Streak = days in a row you've practiced. Solve any lesson today to keep it going — miss a full day and it resets to 1.">🔥 {{ current_user.current_streak }}</div>
+{% endif %}
+<button type="button" class="stamp-pill btn" id="settings-open-btn">settings</button>
           <a href="{{ url_for('auth.logout') }}" class="stamp-pill btn">log out</a>
         {% else %}
           <span id="auth-anchor">
@@ -44,6 +48,21 @@
     <div class="settings-account">
       <div class="settings-label">Signed in as</div>
       <div class="settings-email">{{ current_user.email }}</div>
+    </div>
+
+    <div class="settings-section">
+      <span class="settings-section-tag name">🖼️ AVATAR</span>
+      <div class="avatar-picker">
+        {% for a in ['fox', 'panda', 'penguin', 'cat', 'shiba'] %}
+        <form method="POST" action="{{ url_for('auth.update_avatar') }}" style="display:inline;">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <input type="hidden" name="avatar" value="{{ a }}">
+          <button type="submit" class="avatar-option {{ 'selected' if current_user.avatar == a }}" aria-label="Choose {{ a }} avatar">
+            <img src="{{ url_for('static', filename='img/avatars/' + a + '.png') }}" alt="{{ a }}">
+          </button>
+        </form>
+        {% endfor %}
+      </div>
     </div>
 
     <div class="settings-section">
