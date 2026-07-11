@@ -20,7 +20,7 @@ class Config:
     # Shown as the "Feedback or found a bug?" link in the settings sidebar.
     # Point this at your repo's issues page, e.g.
     # "https://github.com/your-username/pygo/issues"
-    GITHUB_URL = os.environ.get("GITHUB_URL", "https://github.com/shrutijagadale0725-rgb/PYGO")
+    GITHUB_URL = os.environ.get("GITHUB_URL", "https://github.com/shrutijagadale0725-rgb/PYGO/issues/new")
 
     # Gmail SMTP for password reset emails. MAIL_PASSWORD must be a Gmail
     # "app password" (myaccount.google.com/apppasswords), never your real
