@@ -147,7 +147,7 @@ LESSONS = [
             'print(f"Hello, {full_name}!")'
         ),
         "check_pattern": r"Hello,\s*(.+?)!",
-        "placeholder_value": "Ada",
+        "placeholder_value": "PY",
         "success_message": "You combined two strings into one.",
     },
 {
@@ -177,8 +177,8 @@ LESSONS = [
             "seconds = total_seconds  # use % here\n\n"
             'print(f"{minutes}m {seconds}s")'
         ),
-        "check_pattern": r"(\d+)m\s*(\d+)s",
-        "placeholder_value": ["125", "125"],
+        "check_pattern": r"(\d+m\s*\d+s)",
+        "placeholder_value": "125m 125s",
         "success_message": "You split seconds into minutes and leftover seconds.",
     },
     {
@@ -264,7 +264,7 @@ LESSONS = [
             "&lt;something real&gt;</strong>, not the dots."
         ),
         "starter_code": (
-            "is_raining = True  # try switching to False\n\n"
+            "is_raining = False  # try switching to True\n\n"
             "if is_raining:\n"
             '    plan = "bring an umbrella"\n'
             "else:\n"
@@ -466,7 +466,7 @@ LESSONS = [
         'print(f"Roster: {party}")'
     ),
     "check_pattern": r"Roster:\s*(\[.+?\])",
-    "placeholder_value": "",
+    "placeholder_value": "['Kael', 'Rin', 'Bo']",
     "success_message": "You managed a roster with append and remove.",
 },
 {
@@ -525,7 +525,7 @@ LESSONS = [
         'print(f"Squad: {squad}")'
     ),
     "check_pattern": r"Squad:\s*(\[.+?\])",
-    "placeholder_value": "",
+    "placeholder_value": "['Kael']",
     "success_message": "You sliced a list to grab exactly the chunk you needed.",
 },
 {
@@ -616,7 +616,7 @@ LESSONS = [
         "for stat in hero:  # fix me - use .items() to get the value too\n"
         '    print(f"{stat}")'
     ),
-    "check_pattern": r"hp:\s*40",
+    "check_pattern": r"hp:\s*(\d+)",
     "placeholder_value": "",
     "success_message": "You printed a full character sheet, stat and value together.",
 },
@@ -686,7 +686,7 @@ LESSONS = [
         'print(f"Loadout: {loadout}")'
     ),
     "check_pattern": r"Loadout:\s*(\(.+?\))",
-    "placeholder_value": "",
+    "placeholder_value": "('sword', 'shield')",
     "success_message": "You worked with a tuple by respecting that it can't be edited in place.",
 },
 {
@@ -719,7 +719,7 @@ LESSONS = [
         'print(f"Unique drops: {len(loot)}")'
     ),
     "check_pattern": r"Unique drops:\s*(\d+)",
-    "placeholder_value": "",
+    "placeholder_value": "1",
     "success_message": "You built a loot pool that dedupes itself automatically.",
 },
 {
@@ -754,7 +754,7 @@ LESSONS = [
         'print(f"{item}: {status}")'
     ),
     "check_pattern": r"cursed ring:\s*(blocked|allowed)",
-    "placeholder_value": "",
+    "placeholder_value": "allowed",
     "success_message": "You checked membership and picked the right tool for the job.",
 },
 {
@@ -783,10 +783,7 @@ LESSONS = [
     ),
     "starter_code": (
         "numbers = [1, 2, 3, 4]\n\n"
-        "doubled = []\n"
-        "for n in numbers:\n"
-        "    doubled.append(n * 2)\n\n"
-        "# fix me - replace the 3 lines above with one comprehension:\n"
+        "# fix me - build doubled using a list comprehension:\n"
         "# doubled = [n * 2 for n in numbers]\n\n"
         'print(f"Doubled: {doubled}")'
     ),
@@ -823,7 +820,7 @@ LESSONS = [
         'print(f"Survivors: {survivors}")'
     ),
     "check_pattern": r"Survivors:\s*(\[.+?\])",
-    "placeholder_value": "",
+    "placeholder_value": "['Kael', 'Rin', 'Bo']",
     "success_message": "You filtered a list down to only what matters, in one line.",
 },
 {
@@ -919,7 +916,7 @@ LESSONS = [
         "roll = randint(1, 6)\n"
         'print(f"Roll: {roll}")'
     ),
-    "check_pattern": r"Roll:\s*[1-6]\b",
+    "check_pattern": r"Roll:\s*([1-6])\b",
     "placeholder_value": "",
     "success_message": "You borrowed a ready-made spell from Python's standard library.",
 },
@@ -955,7 +952,7 @@ LESSONS = [
         "    contents = f.read()\n\n"
         'print(f"Quest: {contents}")'
     ),
-    "check_pattern": r"Quest:\s*Slay the dragon",
+    "check_pattern": r"Quest:\s*(Slay the dragon)",
     "placeholder_value": "",
     "success_message": "You wrote a file and read it back.",
 },
@@ -1034,7 +1031,7 @@ LESSONS = [
         'print(f"{kael.name} has {kael.hp} HP")'
     ),
     "check_pattern": r"Kael has (\d+) HP",
-    "placeholder_value": "",
+    "placeholder_value": "40",
     "success_message": "You gave your object a method that changes its own state.",
 },
 {
