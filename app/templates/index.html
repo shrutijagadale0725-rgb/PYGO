@@ -1,6 +1,32 @@
 {% extends "base.html" %}
 {% block content %}
 
+{% if all_complete %}
+<div class="finish-overlay" id="finish-overlay">
+  <div class="finish-modal">
+    <button type="button" class="finish-close" id="finish-close-btn" aria-label="Close">✕</button>
+    <div class="finish-trophy">🏆</div>
+    <div class="finish-eyebrow">MILESTONE UNLOCKED</div>
+    <h2 class="finish-title">You did it!</h2>
+    <p class="finish-body">
+      All 33 lessons, done. From your first <code>print()</code> to a full class-based
+      battle system — that's a real milestone, not a small one.
+    </p>
+    <p class="finish-thanks">Thank you for learning with PYGO. 💛</p>
+    <a href="https://github.com/shrutijagadale0725-rgb" target="_blank" rel="noopener" class="finish-credit">shrutijagadale0725-rgb</a><br>
+    <button type="button" class="cta" id="finish-continue-btn">Keep exploring →</button>
+  </div>
+</div>
+<script>
+  (function () {
+    const overlay = document.getElementById('finish-overlay');
+    const close = () => overlay.classList.add('closing');
+    document.getElementById('finish-close-btn').addEventListener('click', close);
+    document.getElementById('finish-continue-btn').addEventListener('click', close);
+  })();
+</script>
+{% endif %}
+
 <div class="wrap">
   <section class="hero">
     <div class="eyebrow-stamp">100% FREE · TOUCH GRASS, THEN CODE · NO ADS</div>
@@ -18,6 +44,7 @@
 
 <a class="cta" href="{{ url_for('main.lesson', slug=hero_lesson.slug) }}"
    {% if not current_user.is_authenticated %}data-requires-auth data-auth-message="🎈 Sign up to start Lesson 1!"{% endif %}>
+
   {% if current_user.is_authenticated and completed %}Continue: {{ hero_lesson.title }} →{% else %}Start Lesson 1 →{% endif %}
 </a>
   </section>

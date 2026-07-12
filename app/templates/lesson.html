@@ -69,6 +69,7 @@
     const XP_REWARD = {{ lesson.xp | tojson }};
     const IS_LOGGED_IN = {{ current_user.is_authenticated | tojson }};
     const ALREADY_COMPLETED = {{ completed | tojson }};
+    const IS_FINAL_LESSON = {{ (next_slug is none) | tojson }};
     const CSRF_TOKEN = {{ csrf_token() | tojson }};
   </script>
   <script src="{{ url_for('static', filename='js/lesson.js') }}"></script>

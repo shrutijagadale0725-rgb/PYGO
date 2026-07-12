@@ -188,6 +188,14 @@
         document.getElementById('result-text').textContent = `${SUCCESS_MESSAGE} +${XP_REWARD} XP`;
         triggerConfetti();
         await reportCompletion();
+
+        if (IS_FINAL_LESSON) {
+          // Let the confetti/sound play for a beat before whisking them
+          // home to the big finish-line celebration.
+          setTimeout(() => {
+            window.location.href = '/';
+          }, 1800);
+        }
       } else if (errored) {
         setStatus("Your code hit an error — check the red message above.", "warn");
       } else if (notYetSolved && match) {
