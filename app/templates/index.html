@@ -13,7 +13,7 @@
       battle system — that's a real milestone, not a small one.
     </p>
     <p class="finish-thanks">Thank you for learning with PYGO. 💛</p>
-    <h5>by <a href="https://github.com/shrutijagadale0725-rgb" target="_blank" rel="noopener" class="finish-credit">shrutijagadale0725-rgb</a></h5>
+    <a href="https://github.com/shrutijagadale0725-rgb" target="_blank" rel="noopener" class="finish-credit">shrutijagadale0725-rgb</a>
     <button type="button" class="cta" id="finish-continue-btn">Keep exploring →</button>
   </div>
 </div>
@@ -42,8 +42,7 @@
       <div class="no-video-caption">zero tutorial videos required</div>
     </div>
 
-<a class="cta" href="{{ url_for('main.lesson', slug=hero_lesson.slug) }}"
-   {% if not current_user.is_authenticated %}data-requires-auth data-auth-message="🎈 Sign up to start Lesson 1!"{% endif %}>
+<a class="cta" href="{% if current_user.is_authenticated %}{{ url_for('main.lesson', slug=hero_lesson.slug) }}{% else %}{{ url_for('auth.signup') }}{% endif %}">
 
   {% if current_user.is_authenticated and completed %}Continue: {{ hero_lesson.title }} →{% else %}Start Lesson 1 →{% endif %}
 </a>

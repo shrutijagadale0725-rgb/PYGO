@@ -8,19 +8,22 @@
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       <div class="field">
         <label for="display_name">Name</label>
-        <input type="text" id="display_name" name="display_name" placeholder="What should we call you?">
-      </div>
+        <input type="text" id="display_name" name="display_name" placeholder="What should we call you?" autocomplete="off">
       <div class="field">
         <label for="email">Email</label>
-        <input type="email" id="email" name="email" required>
+        <input type="email" id="email" name="email" required autocomplete="off">
       </div>
       <div class="field">
         <label for="password">Password</label>
-        <input type="password" id="password" name="password" required minlength="6">
+        <div class="password-wrap">
+          <input type="password" id="password" name="password" required minlength="6" autocomplete="new-password">
+          <button type="button" class="password-toggle" data-target="password" aria-label="Show password">😵</button>
+        </div>
       </div>
       <button class="cta" type="submit" style="width:100%;">Sign up</button>
     </form>
     <div class="auth-switch">Already have an account? <a href="{{ url_for('auth.login') }}">Log in</a></div>
   </div>
 </div>
+<script src="{{ url_for('static', filename='js/password-toggle.js') }}"></script>
 {% endblock %}
