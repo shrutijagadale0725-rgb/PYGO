@@ -711,7 +711,7 @@ LESSONS = [
     "challenge_html": (
         "Two <strong>\"gold\"</strong> drops and one <strong>\"gem\"</strong> just landed "
         "in the pool. Add all three drops using <code>.add()</code>, then hit Run. Output "
-        "should show <strong>2</strong> unique items in the pool, not 3."
+        "should show <strong>3</strong> unique items in the pool, not 1."
     ),
     "starter_code": (
         'loot = {"sword"}\n\n'
